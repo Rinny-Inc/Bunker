@@ -1,0 +1,5 @@
+main: io.noks.bunker.Main
+name: Bunker
+version: 0.1
+author: Noksio
+commands:
