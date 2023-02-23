@@ -12,10 +12,12 @@ public class PlayerManager {
 	public static final Map<UUID, PlayerManager> players = Maps.newConcurrentMap();
 	private final Player player;
 	private final UUID playerUUID;
+	private int money;
 
 	public PlayerManager(UUID playerUUID) {
 		this.playerUUID = playerUUID;
 		this.player = Bukkit.getPlayer(this.playerUUID);
+		this.money = 0;
 		players.putIfAbsent(playerUUID, this);
 	}
 
@@ -36,5 +38,17 @@ public class PlayerManager {
 
 	public UUID getPlayerUUID() {
 		return this.playerUUID;
+	}
+	
+	public int getMoney() {
+		return this.money;
+	}
+	
+	public void addMoney(int toAdd) {
+		this.money += toAdd;
+	}
+	
+	public void removeMoney(int toRemove) {
+		this.money -= toRemove;
 	}
 }
