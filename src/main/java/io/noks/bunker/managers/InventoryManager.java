@@ -6,16 +6,17 @@ import java.util.List;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.noks.bunker.Main;
 import io.noks.bunker.enums.CombatShopEnum;
+import io.noks.bunker.enums.ItemSellable;
 
 public class InventoryManager {
 	private Inventory combatShopInventory;
 	private Inventory buildShopInventory;
-	private Inventory sellItemInventory;
 	private Inventory enchantingInventory;
 	
 	private Main main;
@@ -23,11 +24,9 @@ public class InventoryManager {
 		this.main = main;
 		this.combatShopInventory = main.getServer().createInventory(null, 54, ChatColor.RED.toString() + ChatColor.BOLD + "Combat Shop");
 		this.buildShopInventory = main.getServer().createInventory(null, 36, ChatColor.RED.toString() + ChatColor.BOLD + "Build Shop");
-		this.sellItemInventory = main.getServer().createInventory(null, 9, ChatColor.RED.toString() + ChatColor.BOLD + "Sell Items");
 		this.enchantingInventory = main.getServer().createInventory(null, 9, ChatColor.GREEN.toString() + ChatColor.BOLD + "Tim The Enchanter");
 		this.initCombatShopInventory();
 		this.initBuildShopInventory();
-		this.initSellItemInventory();
 		this.initEnchantingInventory();
 	}
 	
@@ -39,19 +38,20 @@ public class InventoryManager {
 		
 		for (CombatShopEnum items : CombatShopEnum.values()) {
 			final List<String> lore = Arrays.asList(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
+			final String itemName = WordUtils.capitalizeFully(items.name().replaceAll("_", ""));
 			if (items.getContent() != null) {
 				for (ItemStack content : items.getContent()) {
 					lore.add(ChatColor.GRAY.toString() + content.getAmount() + "x " + WordUtils.capitalizeFully(content.getType().toString().replaceAll("_", " ")));
 				}
 			} else {
-				lore.add(ChatColor.GRAY.toString() + items.getItemStack().getAmount() + "x " + WordUtils.capitalizeFully(items.getItemStack().getType().toString().replaceAll("_", " ")));
+				lore.add(ChatColor.GRAY.toString() + items.getItemStack().getAmount() + "x " + (items.name().contains("POTION") ? itemName : WordUtils.capitalizeFully(items.getItemStack().getType().toString().replaceAll("_", " "))));
 			}
 			if (items.isRightClickable()) {
-				lore.add(ChatColor.YELLOW + "Rightclick to buy " + items.getItemStack().getMaxStackSize() + " for " + items.getPrice() * items.getItemStack().getMaxStackSize() + "$");
+				lore.add(ChatColor.YELLOW + "    - " + ChatColor.GREEN + "Right-click to " + (items == CombatShopEnum.MUSHROOM_SOUP ? "fill your inventory" : "buy " + items.getItemStack().getMaxStackSize() + " for " + (items.getPrice() * items.getItemStack().getMaxStackSize()) + "$"));
 			}
 			lore.add(ChatColor.GREEN + "Price: " + ChatColor.YELLOW + items.getPrice() + "$");
 			lore.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
-			this.combatShopInventory.setItem(items.getSlot(), this.main.getItemUtils().getItemStack(items.getItemStack(), WordUtils.capitalizeFully(items.name().replaceAll("_", "")), (String[])lore.toArray()));
+			this.combatShopInventory.setItem(items.getSlot(), this.main.getItemUtils().getItemStack(items.getItemStack(), itemName, (String[])lore.toArray()));
 		}
 	}
 	
@@ -62,11 +62,21 @@ public class InventoryManager {
 		this.fillGlass(this.buildShopInventory);
 	}
 
-	private void initSellItemInventory() {
-		if (this.sellItemInventory.firstEmpty() == -1) {
-			this.sellItemInventory.clear();
+	public Inventory openSellItemInventory(Player player) {
+		final Inventory sellItemInventory = this.main.getServer().createInventory(null, 9, ChatColor.RED.toString() + ChatColor.BOLD + "Sell Items");
+		if (sellItemInventory.firstEmpty() == -1) {
+			sellItemInventory.clear();
 		}
-		this.fillGlass(this.sellItemInventory);
+		this.fillGlass(sellItemInventory);
+		int slot = 1;
+		for (ItemSellable items : ItemSellable.values()) {
+			final List<String> lore = Arrays.asList(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
+			
+			lore.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "-------------------");
+			sellItemInventory.setItem(slot, this.main.getItemUtils().getItemStack(new ItemStack(items.getMaterial(), 1), WordUtils.capitalizeFully(items.name().replaceAll("_", "")), (String[])lore.toArray()));
+			slot += 2;
+		}
+		return sellItemInventory;
 	}	
 
 	private void initEnchantingInventory() {
