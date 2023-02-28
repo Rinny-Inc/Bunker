@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import io.noks.bunker.Main;
+import io.noks.bunker.managers.PlayerManager;
 
 public class PlayerListener implements Listener {
 	private Main plugin;
@@ -27,14 +28,14 @@ public class PlayerListener implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		event.setJoinMessage(null);
 		final Player player = event.getPlayer();
-		
+		new PlayerManager(player.getUniqueId());
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		event.setQuitMessage(null);
 		final Player player = event.getPlayer();
-		
+		PlayerManager.get(player.getUniqueId()).remove();
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
@@ -45,13 +46,13 @@ public class PlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onDeath(PlayerDeathEvent event) {
-		
+		// TODO: remove from the game if DTR < 0
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onRespawn(PlayerRespawnEvent event) {
 		final Player player = event.getPlayer();
-		
+		// TODO: DTR < 0 dont respawn in game
 	}
 
 	@EventHandler(priority=EventPriority.HIGH)

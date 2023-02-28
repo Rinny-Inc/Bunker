@@ -24,6 +24,7 @@ public enum CombatShopEnum {
 	BROWN_MUSHROOM(new ItemStack(Material.BROWN_MUSHROOM, 16), 24, 10, false, null),
 	BOWL(new ItemStack(Material.BOWL, 16), 25, 10, false, null),
 	MUSHROOM_SOUP(new ItemStack(Material.MUSHROOM_SOUP, 1), 41, 5, true, null);
+	// TODO? ADD INVISIBILITY POTION?
 	
 	private ItemStack item;
 	private int slot;

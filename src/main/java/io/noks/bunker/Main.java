@@ -2,6 +2,7 @@ package io.noks.bunker;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import io.noks.bunker.caches.Game;
 import io.noks.bunker.listeners.InventoryListener;
 import io.noks.bunker.listeners.PlayerListener;
 import io.noks.bunker.managers.InventoryManager;
@@ -14,12 +15,14 @@ public class Main extends JavaPlugin {
 		return instance;
 	}
 	
+	private Game game;
 	private ItemUtils itemUtils;
 	private InventoryManager inventoryManager;
 	
 	@Override
 	public void onEnable() {
 		instance = this;
+		this.game = new Game();
 		this.itemUtils = new ItemUtils();
 		this.inventoryManager = new InventoryManager(this);
 		this.registerListeners();
@@ -38,6 +41,10 @@ public class Main extends JavaPlugin {
 	
 	private void registerCommands() {
 		
+	}
+	
+	public Game getGame() {
+		return this.game;
 	}
 	
 	public ItemUtils getItemUtils() {
