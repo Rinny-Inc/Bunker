@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.noks.bunker.caches.Game;
 import io.noks.bunker.listeners.InventoryListener;
 import io.noks.bunker.listeners.PlayerListener;
+import io.noks.bunker.listeners.ServerListener;
 import io.noks.bunker.managers.InventoryManager;
 import io.noks.bunker.managers.PlayerManager;
 import io.noks.bunker.utils.ItemUtils;
@@ -37,6 +38,7 @@ public class Main extends JavaPlugin {
 	private void registerListeners() {
 		new PlayerListener(this);
 		new InventoryListener(this);
+		new ServerListener(this);
 	}
 	
 	private void registerCommands() {
