@@ -2,7 +2,7 @@ package io.noks.bunker;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.noks.bunker.caches.Game;
+import io.noks.api.Game;
 import io.noks.bunker.listeners.InventoryListener;
 import io.noks.bunker.listeners.PlayerListener;
 import io.noks.bunker.listeners.ServerListener;

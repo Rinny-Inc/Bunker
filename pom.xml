@@ -13,10 +13,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>3.4.5</version>
-		</dependency>
+        	<groupId>io.noks.api</groupId>
+            <artifactId>gameapi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
