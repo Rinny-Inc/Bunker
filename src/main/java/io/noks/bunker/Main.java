@@ -3,6 +3,7 @@ package io.noks.bunker;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.noks.api.Game;
+import io.noks.api.caches.FourTeams;
 import io.noks.bunker.listeners.InventoryListener;
 import io.noks.bunker.listeners.PlayerListener;
 import io.noks.bunker.listeners.ServerListener;
@@ -23,7 +24,7 @@ public class Main extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		this.game = new Game();
+		this.game = new Game(new FourTeams(5), 20);
 		this.itemUtils = new ItemUtils();
 		this.inventoryManager = new InventoryManager(this);
 		this.registerListeners();
